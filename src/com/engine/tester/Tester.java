@@ -11,6 +11,7 @@ public class Tester {
 		
 		Renderer render = new Renderer();
 		Loader loader = new Loader();
+		
 		float[] vertices = {
 				// Left bottom triangle
 				-0.5f, 0.5f, 0f,
