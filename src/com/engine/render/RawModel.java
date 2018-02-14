@@ -6,7 +6,6 @@ public class RawModel {
 	private int verticesCount;
 	
 	public RawModel(int vaoID, int verticesCount) {
-		super();
 		this.vaoID = vaoID;
 		this.verticesCount = verticesCount;
 	}
