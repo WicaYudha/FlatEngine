@@ -14,13 +14,10 @@ public class DisplayManager {
 	private static final int FPS_CAP = 60;
 	
 	public static void createDisplay() {
-		ContextAttribs context = new ContextAttribs(3, 2)
-				.withForwardCompatible(true)
-				.withProfileCore(true);
 		try {
 			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
-			Display.create(new PixelFormat(), context);
-			Display.setTitle("My First Display");
+			Display.setInitialBackground(1, 1, 1);
+			Display.create(new PixelFormat().withDepthBits(24).withSamples(4));
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}

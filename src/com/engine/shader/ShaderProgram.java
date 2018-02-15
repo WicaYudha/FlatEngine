@@ -15,7 +15,7 @@ public abstract class ShaderProgram {
 	
 	public ShaderProgram(String vertexShaderFile, String fragmentShaderFile) {
 		vertexShaderID = loadShaderProgram(vertexShaderFile, GL20.GL_VERTEX_SHADER);
-		fragmentShaderID = loadShaderProgram(vertexShaderFile, GL20.GL_FRAGMENT_SHADER);
+		fragmentShaderID = loadShaderProgram(fragmentShaderFile, GL20.GL_FRAGMENT_SHADER);
 		programID = GL20.glCreateProgram();
 		GL20.glAttachShader(programID, vertexShaderID);
 		GL20.glAttachShader(programID, fragmentShaderID);
@@ -40,6 +40,10 @@ public abstract class ShaderProgram {
 	
 	protected void loadFloatUniform(int location, float value) {
 		GL20.glUniform1f(location, value);
+	}
+	
+	protected void loadIntUniform(int location, int value) {
+		GL20.glUniform1i(location, value);
 	}
 	
 	protected void loadVectorUniform(int location, Vector3f value) {

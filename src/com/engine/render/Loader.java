@@ -9,6 +9,10 @@ import org.lwjgl.opengl.*;
 import org.newdawn.slick.opengl.*;
 
 import com.engine.models.*;
+import com.engine.texture.*;
+
+import de.matthiasmann.twl.utils.PNGDecoder;
+import de.matthiasmann.twl.utils.PNGDecoder.*;
 
 public class Loader {
 	
@@ -84,7 +88,7 @@ public class Loader {
 	public int loadTexture(String fileName) {
 		Texture texture = null;
 		try {
-			texture = TextureLoader.getTexture("PNG", new FileInputStream("res/" + fileName + ".png"));
+			texture = TextureLoader.getTexture("PNG", new FileInputStream("./res/textures/" + fileName + ".png"));
 			GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
@@ -129,5 +133,45 @@ public class Loader {
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboID);
 		IntBuffer buffer = storeDataInIntBuffer(indices);
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
+	}
+
+	public int loadCubeMap(String[] textureFiles) {
+		int texID = GL11.glGenTextures();
+		GL13.glActiveTexture(GL13.GL_TEXTURE0);
+		GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, texID);
+
+		for (int i = 0; i < textureFiles.length; i++) {
+			TextureData data = decodeTextureFile("./res/textures/" + textureFiles[i] + ".png");
+			GL11.glTexImage2D(GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL11.GL_RGBA, data.getWidth(),
+					data.getHeight(), 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, data.getBuffer());
+		}
+		GL30.glGenerateMipmap(GL13.GL_TEXTURE_CUBE_MAP);
+		GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+		GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
+		GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
+		GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
+		textures.add(texID);
+		return texID;
+	}
+	
+	private TextureData decodeTextureFile(String fileName) {
+		int width = 0;
+		int height = 0;
+		ByteBuffer buffer = null;
+		try {
+			FileInputStream in = new FileInputStream(fileName);
+			PNGDecoder decoder = new PNGDecoder(in);
+			width = decoder.getWidth();
+			height = decoder.getHeight();
+			buffer = ByteBuffer.allocateDirect(4 * width * height);
+			decoder.decode(buffer, width * 4, Format.RGBA);
+			buffer.flip();
+			in.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Failed to Load Texture :" + fileName);
+			System.exit(-1);
+		}
+		return new TextureData(buffer, width, height);
 	}
 }

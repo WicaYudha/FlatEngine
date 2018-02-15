@@ -1,13 +1,21 @@
 #version 400 core
 
 in vec3 position;
-in vec 2 textureCoordinates;
+in vec2 textureCoordinates;
 in vec3 normal;
 
 out vec3 pass_normal;
 out vec2 pass_textureCoordinates;
 
+uniform mat4 transformationMatrix;
+uniform mat4 projectionMatrix;
+uniform vec4 viewMatrix;
+uniform vec3 cameraPosition;
+
 void main(void){
+	vec4 worldPosition = transformationMatrix * vec4(position, 1.0);
+	gl_Position = projectionMatrix * viewMatrix * worldPosition;
+	
 	pass_textureCoordinates = textureCoordinates;
 	pass_normal = normal;
 	vec3 unitNormal = normalize(normal);
