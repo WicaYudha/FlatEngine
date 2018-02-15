@@ -4,6 +4,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
+import com.engine.models.RawModel;
+
 public class Renderer {
 	
 	public void prepare() {
