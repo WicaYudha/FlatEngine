@@ -22,7 +22,7 @@ public class Loader {
 	
 	public RawModel loadToVao(float[] positions) {
 		int vaoID = createVAO();
-		storeDataInAttributeList(0, positions);
+		storeDataInAttributeList(0, 3, positions);
 		unbindVAO();
 		return new RawModel(vaoID, positions.length / 3);
 	}
@@ -49,23 +49,6 @@ public class Loader {
 		return vaoID;
 	}
 	
-	private void storeDataInAttributeList(int attribNumber, float[] data) {
-		int vboID = GL15.glGenBuffers();
-		vbos.add(vboID);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboID);
-		FloatBuffer buffer = createFloatBuffer(data);
-		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
-		GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-	}
-	
-	private FloatBuffer createFloatBuffer(float[] data) {
-		FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
-		buffer.put(data);
-		buffer.flip();
-		return buffer;
-	}
-	
 	public void cleanUp() {
 		for(int vao : vaos) {
 			GL30.glDeleteFramebuffers(vao);
@@ -73,16 +56,9 @@ public class Loader {
 		for(int vbo : vbos) {
 			GL30.glDeleteFramebuffers(vbo);
 		}
-	}
-
-	public RawModel loadToVAO(float[] positions, float[] textureCoords, float[] normals, int[] indices) {
-		int vaoID = createVAO();
-		bindIndicesBuffer(indices);
-		storeDataInAttributeList(0, 3, positions);
-		storeDataInAttributeList(1, 2, textureCoords);
-		storeDataInAttributeList(2, 3, normals);
-		unbindVAO();
-		return new RawModel(vaoID, indices.length);
+		for(int texture : textures) {
+			GL11.glDeleteTextures(texture);
+		}
 	}
 	
 	public int loadTexture(String fileName) {

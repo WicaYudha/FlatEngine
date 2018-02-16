@@ -1,4 +1,4 @@
-#version 400 core
+#version 150
 
 in vec3 position;
 in vec2 textureCoordinates;
@@ -6,10 +6,12 @@ in vec3 normal;
 
 out vec3 pass_normal;
 out vec2 pass_textureCoordinates;
+out vec3 reflectedVector;
+out vec3 refractedVector;
 
 uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix;
-uniform vec4 viewMatrix;
+uniform mat4 viewMatrix;
 uniform vec3 cameraPosition;
 
 void main(void){
@@ -19,4 +21,9 @@ void main(void){
 	pass_textureCoordinates = textureCoordinates;
 	pass_normal = normal;
 	vec3 unitNormal = normalize(normal);
+	
+	vec3 viewVector = normalize(worldPosition.xyz - cameraPosition);
+	reflectedVector = reflect(viewVector, unitNormal);
+	
+	refractedVector = refract(viewVector, unitNormal, 1.0/1.33);
 }

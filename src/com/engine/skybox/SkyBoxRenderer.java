@@ -15,7 +15,6 @@ public class SkyBoxRenderer {
 	public SkyBoxRenderer(CubeMap cubeMap, Matrix4f projectionMatrix) {
 		this.projectionMatrix = projectionMatrix;
 		shader = new SkyboxShader();
-		//System.out.println("log");
 		this.cubeMap = cubeMap;
 	}
 

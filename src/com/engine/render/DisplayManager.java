@@ -16,7 +16,7 @@ public class DisplayManager {
 	public static void createDisplay() {
 		try {
 			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
-			Display.setInitialBackground(1, 1, 1);
+			Display.setInitialBackground(0, 0, 0);
 			Display.create(new PixelFormat().withDepthBits(24).withSamples(4));
 		} catch (LWJGLException e) {
 			e.printStackTrace();

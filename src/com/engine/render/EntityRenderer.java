@@ -28,6 +28,7 @@ public class EntityRenderer {
 	public void render(List<Entity> entities, Camera camera) {
 		shader.start();
 		shader.loadViewMatrix(camera);
+		bindEnvonmentMap();
 		for (Entity entity : entities) {
 			TexturedModel model = entity.getModel();
 			bindModelVao(model);
@@ -62,10 +63,15 @@ public class EntityRenderer {
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getTextureID());
 	}
+	
+	private void bindEnvonmentMap() {
+		GL13.glActiveTexture(GL13.GL_TEXTURE1);
+		GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, environmentMap.getTexture());
+	}
 
 	private void loadModelMatrix(Entity entity) {
-		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), 0, entity.getRotY(), 0,
-				entity.getScale());
+		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotX(), 
+				entity.getRotY(), entity.getRotZ(), entity.getScale());
 		shader.loadTransformationMatrix(transformationMatrix);
 	}
 	

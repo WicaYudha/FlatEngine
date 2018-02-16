@@ -10,7 +10,7 @@ public class Camera {
 	private float yaw;
 	private float roll;
 	
-	private float distanceFromPlayer = 7;
+	private float distanceFromPlayer = 13;
 	private float angleAroundPlayer = 0;
 	
 	private final int maxLookUp = 90;
@@ -56,7 +56,7 @@ public class Camera {
 	}
 
 	private void calculatePitch() {
-		if(Mouse.isButtonDown(1)) {
+		if(Mouse.isButtonDown(0)) {
 			float pitchChange = Mouse.getDY() * mouseSpeed;
 			pitch -= pitchChange;
 			

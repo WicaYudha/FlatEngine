@@ -14,13 +14,16 @@ import com.engine.texture.*;
 public class Tester {
 
 	public static void main(String[] args) {
+		
 		DisplayManager.createDisplay();
-
 		Camera camera = new Camera();
 		Loader loader = new Loader();
 		MasterRenderer render = new MasterRenderer(loader);
-		List<Entity> entities = new ArrayList<Entity>();
-		entities.add(new Entity(loadModel("dragon", loader), new Vector3f(0, -1, 0), 0, 0, 0, 0.5f));
+		List<Entity> entities = new ArrayList<>();
+		
+		entities.add(new Entity(
+				loadModel("dragon", loader), 
+				new Vector3f(0, -3, 0), 0, 0, 0, 1));
 
 		while (!Display.isCloseRequested()) {
 			camera.move();
