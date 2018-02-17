@@ -22,5 +22,5 @@ void main(void){
 	
 	vec4 enviroColour = mix(reflectedColour, refractedColour, 1/1.33);
 	
-	out_Colour = mix(out_Colour, enviroColour, 0.8);
+	out_Colour = mix(out_Colour, enviroColour, 0.7);
 }

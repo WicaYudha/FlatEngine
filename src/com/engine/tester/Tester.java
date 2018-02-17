@@ -22,8 +22,8 @@ public class Tester {
 		List<Entity> entities = new ArrayList<>();
 		
 		entities.add(new Entity(
-				loadModel("dragon", loader), 
-				new Vector3f(0, -3, 0), 0, 0, 0, 1));
+				loadModel("chess", loader), 
+				new Vector3f(20, -10, 0), 0, -180, 0, 0.5f));
 
 		while (!Display.isCloseRequested()) {
 			camera.move();
