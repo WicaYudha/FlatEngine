@@ -22,10 +22,36 @@ public abstract class ShaderProgram {
 		bindAllAttributes();
 		GL20.glLinkProgram(programID);
 		GL20.glValidateProgram(programID);
+		GL20.glDetachShader(programID, vertexShaderID);
+		GL20.glDetachShader(programID, fragmentShaderID);
+		GL20.glDeleteShader(vertexShaderID);
+		GL20.glDeleteShader(fragmentShaderID);
+		getAllUniformLocation();
+	}
+	
+	public ShaderProgram(String vertexShaderFile, String fragmentShaderFile, String... inVariables) {
+		vertexShaderID = loadShaderProgram(vertexShaderFile, GL20.GL_VERTEX_SHADER);
+		fragmentShaderID = loadShaderProgram(fragmentShaderFile, GL20.GL_FRAGMENT_SHADER);
+		programID = GL20.glCreateProgram();
+		GL20.glAttachShader(programID, vertexShaderID);
+		GL20.glAttachShader(programID, fragmentShaderID);
+		bindAllAttributes(inVariables);
+		GL20.glLinkProgram(programID);
+		GL20.glValidateProgram(programID);
+		GL20.glDetachShader(programID, vertexShaderID);
+		GL20.glDetachShader(programID, fragmentShaderID);
+		GL20.glDeleteShader(vertexShaderID);
+		GL20.glDeleteShader(fragmentShaderID);
 		getAllUniformLocation();
 	}
 	
 	protected abstract void bindAllAttributes();
+	
+	private void bindAllAttributes(String[] inVariables) {
+		for(int i = 0; i < inVariables.length; i++) {
+			GL20.glBindAttribLocation(programID, i, inVariables[i]);
+		}
+	}
 	
 	protected void bindAttribute(int index, String attributeName) {
 		GL20.glBindAttribLocation(programID, index, attributeName);
