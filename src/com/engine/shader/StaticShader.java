@@ -17,43 +17,46 @@ public class StaticShader extends ShaderProgram {
 	private int location_cameraPosition;
 	private int location_environmentMap;
 	
+	UniformMatrix transformationMatrix = new UniformMatrix("transformationMatrix");
+	UniformMatrix projectionMatrix = new UniformMatrix("projectionMatrix");
+	UniformMatrix viewMatrix = new UniformMatrix("viewMatrix");
+	UniformVector3f cameraPosition = new UniformVector3f("cameraPosition");
+	UniformSampler modelTexture = new UniformSampler("modelTexture");
+	UniformSampler enviroMap = new UniformSampler("enviroMap");
+	
+	private static String[] inVariables = {"position", "textureCoordinates", "normal"};
+	
 	public StaticShader() {
-		super(VERTEX_FILE, FRAGMENT_FILE);
+		super(VERTEX_FILE, FRAGMENT_FILE, inVariables);
+		super.storeUniformLocations(true, transformationMatrix, projectionMatrix, viewMatrix, cameraPosition, modelTexture);
 	}
 
-	@Override
-	protected void bindAllAttributes() {
-		super.bindAttribute(0, "position");
-		super.bindAttribute(1, "textureCoordinates");
-		super.bindAttribute(2, "normal");
-	}
-
-	@Override
-	protected void getAllUniformLocation() {
-		location_transformationMatrix = super.getUniformLocation("transformationMatrix");
-		location_projectionMatrix = super.getUniformLocation("projectionMatrix");
-		location_viewMatrix = super.getUniformLocation("viewMatrix");
-		location_cameraPosition = super.getUniformLocation("cameraPosition");
-		location_modelTexture = super.getUniformLocation("modelTexture");
-		location_environmentMap = super.getUniformLocation("enviroMap");
+	
+	protected void getAllUniformLocation() {		
+		location_transformationMatrix = transformationMatrix.getLocation();
+		location_projectionMatrix = projectionMatrix.getLocation();
+		location_viewMatrix = viewMatrix.getLocation();
+		location_cameraPosition = cameraPosition.getLocation();
+		location_modelTexture = modelTexture.getLocation();
+		location_environmentMap = enviroMap.getLocation();
 	}
 	
 	public void loadViewMatrix(Camera camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
-		super.loadMatrixUniform(location_viewMatrix, viewMatrix);
-		super.loadVectorUniform(location_cameraPosition, camera.getPosition());
+		transformationMatrix.loadMatrix(viewMatrix);
+		cameraPosition.loadVector3f(camera.getPosition());
 	}
 	
 	public void loadProjectionMatrix(Matrix4f projection){
-		super.loadMatrixUniform(location_projectionMatrix, projection);
+		projectionMatrix.loadMatrix(projection);
 	}
 	
 	public void loadTransformationMatrix(Matrix4f matrix){
-		super.loadMatrixUniform(location_transformationMatrix, matrix);
+		transformationMatrix.loadMatrix(matrix);
 	}
 	
 	public void connectTextureUnits(){
-		super.loadIntUniform(location_modelTexture, 0);
-		super.loadIntUniform(location_environmentMap, 1);
+		modelTexture.loadTextureUnit(0);
+		enviroMap.loadTextureUnit(1);
 	}
 }

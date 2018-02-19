@@ -13,14 +13,14 @@ public abstract class Uniform {
 		this.name = name;
 	}
 	
-	protected void storeUniformLocation(int programID) {
+	public void storeUniformLocation(int programID) {
 		location = GL20.glGetUniformLocation(programID, name);
 		if(location == NOT_FOUND) {
 			System.err.println("No uniform variable called \"" + name + "\" found for shader program: "+programID);
 		}
 	}
 	
-	protected int getLocation(){
+	public int getLocation(){
 		return location;
 	}
 	

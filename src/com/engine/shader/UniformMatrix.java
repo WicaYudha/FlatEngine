@@ -10,7 +10,7 @@ public class UniformMatrix extends Uniform {
 	
 	private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 	
-	protected UniformMatrix(String name) {
+	public UniformMatrix(String name) {
 		super(name);
 	}
 	
