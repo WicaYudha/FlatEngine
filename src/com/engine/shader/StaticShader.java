@@ -10,35 +10,18 @@ public class StaticShader extends ShaderProgram {
 	private static final String VERTEX_FILE = "./res/shaders/static/vertex_shader.glsl";
 	private static final String FRAGMENT_FILE = "./res/shaders/static/fragment_shader.glsl";
 	
-	private int location_transformationMatrix;
-	private int location_projectionMatrix;
-	private int location_viewMatrix;
-	private int location_modelTexture;
-	private int location_cameraPosition;
-	private int location_environmentMap;
-	
-	UniformMatrix transformationMatrix = new UniformMatrix("transformationMatrix");
-	UniformMatrix projectionMatrix = new UniformMatrix("projectionMatrix");
-	UniformMatrix viewMatrix = new UniformMatrix("viewMatrix");
-	UniformVector3f cameraPosition = new UniformVector3f("cameraPosition");
-	UniformSampler modelTexture = new UniformSampler("modelTexture");
-	UniformSampler enviroMap = new UniformSampler("enviroMap");
+	private UniformMatrix transformationMatrix = new UniformMatrix("transformationMatrix");
+	private UniformMatrix projectionMatrix = new UniformMatrix("projectionMatrix");
+	private UniformMatrix viewMatrix = new UniformMatrix("viewMatrix");
+	private UniformVector3f cameraPosition = new UniformVector3f("cameraPosition");
+	private UniformSampler modelTexture = new UniformSampler("modelTexture");
+	private UniformSampler enviroMap = new UniformSampler("enviroMap");
 	
 	private static String[] inVariables = {"position", "textureCoordinates", "normal"};
 	
 	public StaticShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE, inVariables);
 		super.storeUniformLocations(true, transformationMatrix, projectionMatrix, viewMatrix, cameraPosition, modelTexture);
-	}
-
-	
-	protected void getAllUniformLocation() {		
-		location_transformationMatrix = transformationMatrix.getLocation();
-		location_projectionMatrix = projectionMatrix.getLocation();
-		location_viewMatrix = viewMatrix.getLocation();
-		location_cameraPosition = cameraPosition.getLocation();
-		location_modelTexture = modelTexture.getLocation();
-		location_environmentMap = enviroMap.getLocation();
 	}
 	
 	public void loadViewMatrix(Camera camera) {

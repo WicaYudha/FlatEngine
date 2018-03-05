@@ -4,7 +4,7 @@ import org.lwjgl.opengl.GL20;
 
 public class UniformSampler extends Uniform {
 	
-	private int current;
+	private int textureUnit;
 	private boolean used = false;
 	
 	public UniformSampler(String name) {
@@ -12,10 +12,10 @@ public class UniformSampler extends Uniform {
 	}
 	
 	public void loadTextureUnit(int textureUnit) {
-		if(!used || current != textureUnit) {
+		if(!used || this.textureUnit != textureUnit) {
 			GL20.glUniform1i(super.getLocation(), textureUnit);
 			used = true;
-			current = textureUnit;
+			this.textureUnit = textureUnit;
 		}
 	}
 
